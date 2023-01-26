@@ -1,0 +1,85 @@
+version: "3"
+services:
+  postgres:
+    hostname: postgres
+    container_name: postgres
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./staging_dump.sql:/docker-entrypoint-initdb.d/staging_dump.sql
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: locationqa
+      POSTGRES_PASSWORD: locationqa
+      POSTGRES_DB: keylime
+    healthcheck:
+      test: pg_isready --dbname keylime --username locationqa
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    user: postgres
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: frontend
+    depends_on:
+      - postgres
+    restart: on-failure
+    environment:
+      BACKEND_HOST: backend
+    volumes:
+      - ./front_end:/usr/src/app/front_end
+      - static_data:/usr/src/app/assets/static/webpack_bundles
+    command: npm start
+    healthcheck:
+      test: bash -c "[ -f /usr/src/app/assets/static/webpack_bundles/webpack-stats.json ]"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - 8080:8080
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: backend
+    depends_on:
+      - frontend
+      - postgres
+    restart: on-failure
+    volumes:
+      - ./keylime_secrets:/usr/src/app/keylime_secrets
+      - ./rafael_backend:/usr/src/app
+      - ./front_end/templates:/usr/src/assets/templates
+      - static_data:/usr/src/assets/static/webpack_bundles
+    healthcheck:
+      test: bash -c "curl --fail http://127.0.0.1:8000/__health/ || exit 1"
+      interval: 60s
+      timeout: 10s
+      retries: 5
+    environment:
+      PLATFORM_SECRETS_PATH: /usr/src/app
+    ports:
+      - 8000:8000
+      - 5678:5678
+    command: bash -c "[ -f /usr/src/app/keylime_secrets ] || (echo 'ERROR keylime_secrets is missing' && exit 1) &&
+                      until [ -f /usr/src/assets/static/webpack_bundles/webpack-stats.json ]; do echo 'Waiting for webpack-stats.json' && sleep 3; done; echo 'webpack-stats.json found' &&
+                      python manage.py collectstatic --noinput && 
+                      python manage.py migrate --noinput && 
+                      python -m pip install --upgrade debugpy -t /tmp &&
+                      python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 manage.py runserver 0.0.0.0:8000 --nothreading --noreload"
+  # job_runner:
+  #   container_name: job_runner
+  #   image: curlimages/curl:7.79.1
+  #   depends_on:
+  #     - backend
+  #   command: /bin/sh -c "sleep 120; while true; do /usr/bin/curl -v http://backend:8000/scheduler_manager/run_a_job/; sleep 1800; done"
+
+volumes:
+  postgres_data:
+  static_data:
+  imgs:
+  map_resources:
+  templates:

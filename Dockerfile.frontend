@@ -1,0 +1,26 @@
+FROM docker.apple.com/library/node:12.13 AS frontend
+
+ENV PATH="/usr/src/app/node_modules/.bin:$PATH"
+
+WORKDIR /usr/src/app
+
+RUN mkdir -p /usr/src/app/server/static/webpack_bundles
+
+COPY front_end/ /usr/src/app/front_end
+
+COPY \
+    .babelrc \
+    .eslintrc \
+    .prettierrc \
+    enzyme.config.js \
+    jest.config.js \
+    package-lock.json \
+    package.json \
+    webpack.config.js \
+    /usr/src/app/
+
+RUN npm config set registry https://npm.apple.com && \
+    npm install --no-progress && \
+    npm cache clean --force
+
+RUN npm run docker:build

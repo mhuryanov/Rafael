@@ -1,0 +1,27 @@
+{
+    // this must be placed in ./.vscode directory
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Remote Attach",
+            "type": "python",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/rafael_backend",
+                    "remoteRoot": "/usr/src/app"
+                }
+            ]
+        },
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "React: Debug with Chrome",
+            "url": "http://127.0.0.1:8080"
+        }
+    ]
+}

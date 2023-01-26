@@ -1,0 +1,27 @@
+{% load render_bundle from webpack_loader %}
+{% load webpack_static from webpack_loader %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Keylime Pie Dashboard</title>
+  <script type="text/javascript">
+    const userInfo = {{ user_info| safe}}
+    const klpBackEndVersion = "{{klp_backend_version}}"
+  </script>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv='cache-control' content='no-cache'>
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="icon" href="{% webpack_static "imgs/apple.png" %}" type="image/png" />
+  {% render_bundle 'main' 'css' %}
+</head>
+
+<body>
+
+  <div id="body_container"></div>
+  {% render_bundle 'main' 'js' %}
+
+</body>
+
+</html>

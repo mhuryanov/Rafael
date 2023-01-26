@@ -1,0 +1,65 @@
+/* Table Styles */
+table.statstable{
+	border: 3px solid #636ad0;
+	-moz-box-shadow: 3px 3px 5px #999;
+	-webkit-box-shadow: 3px 3px 5px #999;
+	box-shadow: 3px 3px 5px #999;
+	border-collapse:collapse;
+	background: #efefef;
+}
+
+td:first-child {
+	text-align: left;
+	background: #d3d9f2;
+	font-weight: bold;
+}
+
+table.statstable th {
+	font-weight: bold;
+	background: #8d93ea;
+    border: 1px solid #000;
+	text-align:center;
+	font: normal 12px "Lucida Grande", Lucida, Verdana, sans-serif;
+	padding: 3px;
+}
+
+table.statstable td {
+	border: 1px solid #000;
+	text-align:center;
+	font: normal 12px "Lucida Grande", Lucida, Verdana, sans-serif;
+	padding: 3px;
+}
+
+table.statstable td.pass, table.statstable th.pass {
+	background: rgb(170,196,119);
+}
+table.statstable td.fail, table.statstable th.fail {
+	background: rgb(206,101,98);
+}
+table.statstable td.error, table.statstable th.error {
+	background: rgb(164,50,172);
+}
+table.statstable td.not_run, table.statstable th.not_run {
+	background: rgb(149,147,120);
+}
+table.statstable td.na, table.statstable th.na{
+	background: #bbb;
+}
+table.statstable td.manual, table.statstable th.manual{
+	background: rgb(255,127,36);
+}
+table.statstable td.borderline, table.statstable th.borderline {
+	background: rgb(230,200,100);
+}
+table.statstable td.alignleft, table.statstable th.alignleft {
+	text-align: left;
+	padding-left: 5px;
+}
+
+table.statstablepass {border-color: rgb(170,196,119);}
+table.statstablefail {border-color: rgb(206,101,98);}
+
+tr.hrow{ background-color: rgb(97,149,197);}
+tr.hrow.secondary{ background-color: rgb(97,149,140);}
+tr.hrow.tertiary{ background-color: rgb(87,129,140);}
+th a:link, th a:visited, th a:active {color:#fff; text-decoration:none;}

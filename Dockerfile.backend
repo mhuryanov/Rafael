@@ -1,0 +1,21 @@
+FROM docker.apple.com/python:3.7-slim as backend
+
+LABEL authors="Mike Hosseini <mike_hosseini@apple.com>"
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libpq-dev postgresql-client build-essential git curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src/app/
+
+RUN mkdir -p /usr/src/assets/staticfiles/
+
+COPY rafael_backend /usr/src/app/
+
+RUN python -m pip install --upgrade pip \
+    && python -m pip install -r requirements.txt --progress-bar off
+
+COPY front_end/templates /usr/src/app/front_end/templates
+
+CMD ["bash", "-c", "[ -f /usr/src/app/server/static/webpack_bundles/webpack-stats.json ] && python manage.py collectstatic --noinput && python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000 --verbosity 3"]

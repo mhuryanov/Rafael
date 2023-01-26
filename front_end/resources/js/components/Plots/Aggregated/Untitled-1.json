@@ -1,0 +1,17 @@
+{
+    "technology": "GNSS",
+    "feature": "DRIVE",
+    "test_date": "2022-01-25",
+    "fieldtest": "9a4184a8-8060-11ec-a60f-6805ca5eeef0",
+    "build_train": "SkyEcho",
+    "build_version": "19E204",
+    "model_hardware": "D49AP",
+    "device_ecid": "5638953197633822",
+    "device_serial_number": "CPHF9FJR4D",
+    "device_type": "iPhone",
+    "archive_type": "TestDevice",
+    "id": "9d5f6d58-8060-11ec-b760-6805ca5cb4a8",
+    "pipelinestate": "Processing__SUCCEEDED",
+    "fieldtest_name": "ppk_resubmit",
+    "archive_name": "Archive Name"
+}

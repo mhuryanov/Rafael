@@ -1,0 +1,31 @@
+#mapid {
+	height:500px;
+}
+
+.legend {
+    line-height: 24px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+.circle {
+	height: 10px;
+	width: 10px;
+	border-radius: 100%;
+	display: inline-block;
+}
+
+.leaflet-popup-tip {
+width: 0px;
+height: 0px;
+}
+
+.leaflet-popup-pane {
+  z-index: 1000;
+}

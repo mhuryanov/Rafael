@@ -1,0 +1,107 @@
+[
+    {
+        "placement": "25",
+        "value": 5.881347,
+        "label": "Average"
+    },
+    {
+        "placement": "50",
+        "value": 10.117723,
+        "label": "Average"
+    },
+    {
+        "placement": "75",
+        "value": 12.9385165,
+        "label": "Average"
+    },
+    {
+        "placement": "125",
+        "value": 2.28785075,
+        "label": "Average"
+    },
+    {
+        "placement": "150",
+        "value": 3.5431029999999994,
+        "label": "Average"
+    },
+    {
+        "placement": "175",
+        "value": 10.40298525,
+        "label": "Average"
+    },
+    {
+        "placement": "225",
+        "value": 3.363596,
+        "label": "Average"
+    },
+    {
+        "placement": "250",
+        "value": 4.2361555,
+        "label": "Average"
+    },
+    {
+        "placement": "275",
+        "value": 8.700851499999999,
+        "label": "Average"
+    },
+    {
+        "placement": "325",
+        "value": 2.6156965999999997,
+        "label": "Average"
+    },
+    {
+        "placement": "350",
+        "value": 3.576905,
+        "label": "Average"
+    },
+    {
+        "placement": "375",
+        "value": 4.949925,
+        "label": "Average"
+    },
+    {
+        "placement": "425",
+        "value": 3.0896969999999997,
+        "label": "Average"
+    },
+    {
+        "placement": "450",
+        "value": 4.377778333333333,
+        "label": "Average"
+    },
+    {
+        "placement": "475",
+        "value": 5.751675333333334,
+        "label": "Average"
+    },
+    {
+        "placement": "525",
+        "value": 5.6532625,
+        "label": "Average"
+    },
+    {
+        "placement": "550",
+        "value": 9.037127,
+        "label": "Average"
+    },
+    {
+        "placement": "575",
+        "value": 12.055216999999999,
+        "label": "Average"
+    },
+    {
+        "placement": "625",
+        "value": 2.1649235,
+        "label": "Average"
+    },
+    {
+        "placement": "650",
+        "value": 3.505343,
+        "label": "Average"
+    },
+    {
+        "placement": "675",
+        "value": 4.9116444999999995,
+        "label": "Average"
+    }
+]

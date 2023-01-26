@@ -1,0 +1,67 @@
+# -*- yaml -*-
+
+# This apps.yaml file is used to configure how your application is deployed,
+# executed, and monitored.
+
+# You can specify one or more applications in this file. The application, with a
+# given project in a given environment, is the unit of Jarvis scheduling.
+
+rafael: # this is the application name
+  baseImage: fuji # python requires the fuji base image rather than gala
+
+  processes:
+    # Processes. You can one or more processes per app, all of which will be
+    # scheduled together. Processes correspond to Orchard's instance types.
+    web:
+      # Values are specified as either MiB or GiB (spaces between the number and unit are optional).
+      # The units MB and GB can also be used, but will be interpreted as MiB (2^20 bytes) or GiB (2^30 bytes).
+      # For example, these are equivalent: 512 MB, 512 MiB, 512MB, 512MiB
+      memory: 6 GiB
+      disk: 2 GiB
+
+      # Optional... if defined, processes of a tier will be launched together.
+      # Processes of lower-numbered tiers must reach capacity before
+      # higher-numbered tiers can launch.  Any processes with no startupTier set
+      # are implicitly set to `1`.
+      startupTier: 1
+      initial_instance_count: 24
+
+      # Optional... default is "service", which means it's long running and
+      # should be relaunched if it fails.  "startup" means it's expected to run
+      # once and finish. The "startup" tasks run before any "service" tasks,
+      # regardless of tier, and must all finish successfully before any service
+      # tasks can start.
+      startupType: service
+
+      # How to start this type of process
+      command: chmod 777 ./start_web.sh; ./start_web.sh
+
+      # Actual number is exposed as env var: PORT_PUBLIC, PORT_ADMIN, etc.
+      # This is an array because order matters... the first is also aliased to
+      # PORT and PORT0, the second is PORT1, etc.  Most frameworks preserve
+      # order in hashes, but we can't always rely on that.
+      listeners:
+        - name: public # this will be exposed as PORT_PUBLIC as well as PORT and PORT0.
+          loadBalancer: true # true means we'll get a "VIP" (nice DNS name) assigned to this listener
+
+      health:
+        # Supported types of health checks: http and command
+        type: http
+        path: /api/v0.01/scheduler_manager/run_a_job/
+        expect: 200 # returning anything other than this and the app will be deemed "unhealthy"
+        # Which listener is responsible for the health check
+        # Not required for a command-based health check
+        listener: public
+
+        # These are in the command health check too.  These are defaults, so they're optional if you're ok with them.
+        interval: 60 # Run every 30 seconds
+        consecutiveFailures:
+          200 # how many failures in a row before it's actually determined unhealthy
+        gracePeriod:
+          600 # how long (in seconds) we let health checks fail during initial startup
+          # (before the first passed check), i.e., we'll let the app be unhealthy
+          # for this amount of time upon startup before considering it truly unhealthy
+    startup:
+      memory: 1GB
+      startupType: startup
+      command: chmod 777 ./db_migrations.sh; ./db_migrations.sh

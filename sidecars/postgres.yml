@@ -1,0 +1,16 @@
+schemaVersion: 2.0
+
+image: docker://docker.apple.com/postgres:9.6.11
+host: PG_HOST
+ports:
+  - name: PG_PORT
+    default: 5432
+commands:
+
+  - export POSTGRES_USER=locationqa
+  - export POSTGRES_PASSWORD= 
+  - export POSTGRES_DB=keylime
+  
+  # Set the user used to connect to the db by your app here:
+  # /dev is on tmpfs, let's exploit it to
+  - PGDATA=/run/sidecar/postgres PGPORT=$PG_PORT /docker-entrypoint.sh postgres

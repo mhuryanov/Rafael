@@ -1,0 +1,120 @@
+schemaVersion: 2.0
+
+pipelines:
+- branchName: prototype
+  build:
+      template: freestyle:v4:publish
+      steps:
+      - ./build.sh
+      - ci stage-app --app-name=rafael --runtime=python-3.7.4-1 --app-version=3.0.0 ".out/*"
+  test:
+      sidecar: true	
+  reports:
+    junit:
+      trim: true
+      paths:
+      - "**/.out/test-results/*.xml"
+
+  machine:
+    baseImage: docker.apple.com/rio/fuji-bdz:latest
+
+  package:
+    slug: true
+  deploy:
+    pieCompute:
+      target: app
+      deployFlow: auto
+      environmentName: prototype
+      appAttributes:
+        availabilityZones:
+        - usprz06
+# =============================================
+- branchName: develop
+  build:
+      template: freestyle:v4:publish
+      steps:
+      - ./build.sh
+      - ci stage-app --app-name=rafael --runtime=python-3.7.4-1 --app-version=3.0.0 ".out/*"
+  test:
+      sidecar: true	
+  reports:
+    junit:
+      trim: true
+      paths:
+      - "**/.out/test-results/*.xml"
+
+  machine:
+    baseImage: docker.apple.com/rio/fuji-bdz:latest
+
+  package:
+    slug: true
+  deploy:
+    pieCompute:
+      target: app
+      deployFlow: auto
+      environmentName: staging
+      appAttributes:
+        availabilityZones:
+        - usprz06
+# =============================================
+- branchName: master
+  build:
+      template: freestyle:v4:publish
+      steps:
+      - ./build.sh
+      - ci stage-app --app-name=rafael --runtime=python-3.7.4-1 --app-version=2.0.0 ".out/*"
+  test:
+      sidecar: true	
+  reports:
+    junit:
+      trim: true
+      paths:
+      - "**/.out/test-results/*.xml"
+
+  machine:
+    baseImage: docker.apple.com/rio/fuji-bdz:latest
+
+  package:
+    slug: true
+  deploy:
+    pieCompute:
+      target: app
+      deployFlow: auto
+      environmentName: prod
+      appAttributes:
+        availabilityZones:
+        - usprz06
+# =============================================
+- branchName: master
+  build:
+      template: freestyle:v4:prb
+      steps:
+      - ./build.sh
+      - ci stage-app --app-name=rafael --runtime=python-3.7.4-1 --app-version=2.0.0 ".out/*"
+  test:
+      sidecar: true	
+  reports:
+    junit:
+      trim: true
+      paths:
+      - "**/.out/test-results/*.xml"
+
+  machine:
+    baseImage: docker.apple.com/rio/fuji-bdz:latest
+# =============================================
+- branchName: develop
+  build:
+      template: freestyle:v4:prb
+      steps:
+      - ./build.sh
+      - ci stage-app --app-name=rafael --runtime=python-3.7.4-1 --app-version=2.0.0 ".out/*"
+  test:
+      sidecar: true	
+  reports:
+    junit:
+      trim: true
+      paths:
+      - "**/.out/test-results/*.xml"
+
+  machine:
+    baseImage: docker.apple.com/rio/fuji-bdz:latest

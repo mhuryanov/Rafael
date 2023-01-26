@@ -1,0 +1,86 @@
+/* eslint-disable react/prop-types */
+import React, { Suspense, lazy, useState } from 'react'
+import {
+  Row, Col
+} from 'react-bootstrap'
+import { Spinner } from '@tidbits/react-tidbits/Spinner'
+import { Navigation, NavigationItem } from '@dx/continuum-navigation'
+
+import Filter from '../../../Widgets/Filter'
+import MetaKeySelection from '../MetaKeySelection'
+
+const DeviceCrashes = lazy(() => import('../DeviceCrashes'))
+const SummaryTable = lazy(() => import('../../../Tables/SummaryTable'))
+
+const TABS = [
+  'GEOFENCING',
+  'WSB'
+]
+
+const ClxGFSummary = ({
+  feature,
+  archives
+}) => {
+  const archiveIds = archives.map(archive => archive.id)
+  const technology = "CLX"
+  const completedDevices = archives.map(archive => archive.model_hardware)
+  const completedBuildTrains = archives.map(archive => archive.build_train)
+  const [filters, setFilters] = useState({
+    archiveIds,
+    devices: completedDevices,
+    buildTrains: completedBuildTrains
+  })
+  const [selectedTab, setSelectedTab] = useState(TABS[0])
+
+  console.log('Rendering ClxGFSummary')
+  return (
+    <>
+      <Navigation direction='horizontal'>
+        {TABS.map(tab => (
+          <NavigationItem
+            key={tab} 
+            variant="tab"
+            onClick={() => setSelectedTab(tab)}
+            active={selectedTab === tab}
+          >
+            {tab}
+          </NavigationItem>
+        ))}
+      </Navigation>
+      <Row>
+        <Col className="fieldtest-filter">
+          <Filter
+            title="Filter by Device"
+            type="devices"
+            items={completedDevices}
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </Col>
+        <Col className="fieldtest-filter">
+          <Filter
+            title="Filter by Build"
+            type="buildTrains"
+            items={completedBuildTrains}
+            filters={filters}
+            setFilters={setFilters}
+          />
+        </Col>
+        <MetaKeySelection technology={technology} feature={feature} archives={archives} />
+      </Row>
+      <Row>
+        <Col className="box report-table">
+          <h1 className="plot-title" style={{ marginTop: '25px' }}>Summary Report</h1>
+          <Row className='justify-content-center zero-margin'>
+            <Suspense fallback={<Spinner visible />}>
+              <SummaryTable feature={selectedTab} archives={archives} technology={technology} filters={filters} setFilters={setFilters} />
+            </Suspense>
+          </Row>
+        </Col>
+      </Row>
+      <DeviceCrashes archives={archives} />
+    </>
+  )
+}
+
+export default React.memo(ClxGFSummary)

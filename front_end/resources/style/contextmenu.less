@@ -1,0 +1,61 @@
+@contextmenuPrefixCls: rc-tree-contextmenu;
+.@{contextmenuPrefixCls} {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  z-index: 20000;
+  display: block;
+  background-color: #fff;
+
+  &-hidden {
+    display: none;
+  }
+
+  &-inner {
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+  }
+}
+.font-size(@sizeValue) {
+  @remValue: @sizeValue;
+  @pxValue: (@sizeValue * 10);
+  font-size: ~"@{pxValue}px"; 
+  font-size: ~"@{remValue}rem";
+}
+
+ul.rc-tree-show-line{
+  span.rc-tree-title{
+    .font-size(1.2);
+    color:rgb(34, 45, 95);
+    font-family: 'Times New Roman';
+    padding-left: 3px;
+  }
+ 
+}
+
+
+
+
+.rc-tree li span.rc-tree-switcher.rc-tree-icon__customize, .rc-tree li span.rc-tree-checkbox.rc-tree-icon__customize, .rc-tree li span.rc-tree-iconEle.rc-tree-icon__customize{
+  margin-top: -10px;
+  color: black
+}
+.cus-label {
+  margin-left: 15px;
+  input{
+    margin-right: 5px;
+  }
+  
+}
+.rc-tree-node-selected {
+    background-color: #7d9fe9 !important;
+    border: 1px #6298bd solid !important;
+    border-radius:25px;
+    opacity: 0.8;
+    padding-bottom: 25px !important;
+  }
+  .rc-tree-contextmenu-inner{
+    border: 1px #6298bd solid !important;
+    padding: 0;
+    border-radius: 20px;
+  }
